@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CircumstancesDto",
+  "type": "object",
+  "properties": {
+    "dateOfAccidentUtc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The UTC date and time of the accident. Use the ISO8601 format, e.g. 2025-09-20T11:07:05Z, as a value."
+    },
+    "accidentType": {
+      "type": "string",
+      "description": "The type of accident."
+    },
+    "passengers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/PersonDto"
+      },
+      "description": "A list of passengers that were in the car during the accident. The array should be empty if no one was in the car."
+    },
+    "countryCode": {
+      "type": "string",
+      "description": "The country code where the accident occurred."
+    },
+    "reasonOfTravel": {
+      "type": "string",
+      "description": "The reason for travel at the time of the accident."
+    },
+    "otherPartyContact": {
+      "type": "object",
+      "$ref": "#/definitions/PersonDto",
+      "description": "Contact information for the other party involved in the accident, if applicable."
+    },
+    "carType": {
+      "type": "string",
+      "description": "The type of car involved in the accident."
+    },
+    "carColor": {
+      "type": "string",
+      "description": "The color of the car involved in the accident."
+    }
+  },
+  "definitions": {
+    "PersonDto": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "description": "The first name of the person."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The last name of the person."
+        }
+      }
+    },
+    "AccidentType": {
+      "type": "string",
+      "description": "Describes which type of accident occurred.",
+      "enum": [
+        "BreakDown",
+        "CarAccident",
+        "VehicleTheft",
+        "SomethingElse"
+      ]
+    }
+  }
+}

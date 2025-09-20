@@ -1,0 +1,12 @@
+﻿.vs/
+.vscode/
+.idea/
+bin/
+obj/
+backend/IdentityServer/keys/
+backend/AiInformationExtractionApi/audio/
+*.user
+*.suo
+testsettings.Development.json
+
+node_modules/

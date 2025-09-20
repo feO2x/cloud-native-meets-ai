@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../AspireAppHost/AspireAppHost.csproj" />
+        <PackageReference Include="Aspire.Hosting.Testing" />
+        <PackageReference Include="Duende.AccessTokenManagement" />
+        <PackageReference Include="FluentAssertions" />
+        <PackageReference Include="Light.EmbeddedResources" />
+        <PackageReference Include="Light.Xunit" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="xunit" />
+        <PackageReference Include="xunit.runner.visualstudio">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="vehicle-theft-in-front-of-supermarket.mp3" />
+        <EmbeddedResource Include="scratch-rear-left-fender.jpeg" />
+    </ItemGroup>
+
+</Project>
