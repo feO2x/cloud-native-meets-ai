@@ -33,6 +33,13 @@ public static class CompositionRoot
            .WithReference(aiInformationExtractionDatabase)
            .WithReference(identityServer);
 
+        var frontend = builder
+           .AddNpmApp(Constants.FrontendName, "../../frontend", "dev")
+           .WaitFor(damageReportsApi)
+           .WaitFor(aiInformationExtractionApi)
+           .WithEnvironment("BROWSER", "none") // Disable opening browser on npm start
+           .WithHttpEndpoint(targetPort: 3000, isProxied: false);
+
         if (appHostOptions.RunOllama)
         {
             var ollamaServer = builder
@@ -51,9 +58,11 @@ public static class CompositionRoot
         identityServer.WithReference(gateway);
         gateway
            .WaitFor(identityServer)
+           .WaitFor(frontend)
            .WithReference(identityServer)
            .WithReference(damageReportsApi)
-           .WithReference(aiInformationExtractionApi);
+           .WithReference(aiInformationExtractionApi)
+           .WithReference(frontend);
 
         return builder;
     }
