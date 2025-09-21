@@ -49,8 +49,9 @@ public sealed class PromptManager
 
     private const string ExampleCircumstances =
         """
-        Please note that you can use the already existing personal data to fill the first passenger. Important: if no one
-        was in the car during the accident, set the value for `passergers` to an empty array.
+        Please note that you should only add passengers if they are explicitly mentioned in to be in the car
+        when the accident happened. If this is true, you can derive their name from existing personal data that might
+        be provided in the next message.
 
         Example 1: "On 2024-04-28 at 10:40 PM, I came out of the cinema and saw that another car hit my one
         while backing out of the parking space. My car is a red Volkswagen Golf 3, the other car belongs to
