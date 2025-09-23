@@ -19,4 +19,5 @@ public static class Constants
     public const string Media = "Media";
     public const string DefaultPolicyName = "DefaultPolicy";
     public const string GatewayName = "Gateway";
+    public const string FrontendName = "Frontend";
 }

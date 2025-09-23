@@ -8,5 +8,3 @@ backend/AiInformationExtractionApi/audio/
 *.user
 *.suo
 testsettings.Development.json
-
-node_modules/
