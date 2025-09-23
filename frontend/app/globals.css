@@ -36,3 +36,13 @@ a {
 .ant-layout-content {
   background: var(--background);
 }
+
+/* Custom styles for damage report list items */
+.damage-report-list-item {
+  transition: all 0.2s ease-in-out;
+}
+
+.damage-report-list-item:hover {
+  background-color: #f5f5f5 !important;
+  transform: translateX(2px);
+}
