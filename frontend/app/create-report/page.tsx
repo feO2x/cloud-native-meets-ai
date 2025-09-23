@@ -103,6 +103,8 @@ export default function CreateReportPage() {
         <VehicleDamageForm 
           data={vehicleDamage} 
           onDataChange={setVehicleDamage}
+          personalData={personalData}
+          circumstances={circumstances}
         />
       )
     },

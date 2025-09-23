@@ -3,7 +3,8 @@
 import React from 'react';
 import { Form, Select, Row, Col, Typography, Card, Divider } from 'antd';
 import { CarOutlined } from '@ant-design/icons';
-import { VehicleDamageDto, DamageType } from '../../types/damage-reports';
+import { VehicleDamageDto, DamageType, PersonalDataDto, CircumstancesDto } from '../../types/damage-reports';
+import { SmartImageButton } from './SmartImageButton';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -11,6 +12,8 @@ const { Option } = Select;
 interface VehicleDamageFormProps {
   data: VehicleDamageDto;
   onDataChange: (data: VehicleDamageDto) => void;
+  personalData: PersonalDataDto;
+  circumstances: CircumstancesDto;
 }
 
 const damageTypeOptions = [
@@ -108,7 +111,7 @@ const vehicleParts = [
   }
 ];
 
-export const VehicleDamageForm: React.FC<VehicleDamageFormProps> = ({ data, onDataChange }) => {
+export const VehicleDamageForm: React.FC<VehicleDamageFormProps> = ({ data, onDataChange, personalData, circumstances }) => {
   const handleDamageChange = (partKey: keyof VehicleDamageDto, damageType: DamageType) => {
     onDataChange({
       ...data,
@@ -117,11 +120,28 @@ export const VehicleDamageForm: React.FC<VehicleDamageFormProps> = ({ data, onDa
   };
 
 
+  const handleImageAnalysisComplete = (analysisResult: Partial<VehicleDamageDto>) => {
+    // Merge the analysis result with existing data, only updating defined values
+    const updatedData = { ...data };
+    Object.entries(analysisResult).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== DamageType.None) {
+        (updatedData as Record<string, unknown>)[key] = value;
+      }
+    });
+    onDataChange(updatedData);
+  };
+
   // Count damaged parts for summary
   const damagedPartsCount = Object.values(data).filter(damage => damage !== DamageType.None).length;
 
   return (
     <div>
+      <SmartImageButton 
+        onAnalysisComplete={handleImageAnalysisComplete}
+        existingPersonalData={personalData}
+        existingCircumstances={circumstances}
+      />
+      
       <Title level={3} style={{ marginBottom: '24px' }}>
         <CarOutlined style={{ marginRight: '8px' }} />
         Vehicle Damage Assessment

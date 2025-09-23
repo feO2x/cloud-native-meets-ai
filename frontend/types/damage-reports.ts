@@ -138,3 +138,16 @@ export interface SpeechAnalysisResponseDto {
   createdAtUtc: string;
   analysisResult: CircumstancesDto; // For Circumstances section
 }
+
+export interface AnalyzeImageRequestDto {
+  formSection: FormSection;
+  imageId: string;
+  existingDamageReportData: Record<string, unknown>;
+}
+
+export interface ImageAnalysisResponseDto {
+  analysisType: string;
+  formSection: FormSection;
+  createdAtUtc: string;
+  analysisResult: VehicleDamageDto; // For VehicleDamage section
+}
