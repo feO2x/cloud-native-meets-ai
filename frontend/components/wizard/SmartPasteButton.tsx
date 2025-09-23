@@ -80,12 +80,33 @@ export const SmartPasteButton: React.FC<SmartPasteButtonProps> = ({ onAnalysisCo
   return (
     <>
       <Button 
-        type="dashed" 
+        type="primary"
+        size="large"
         icon={<RobotOutlined />}
         onClick={handleOpenModal}
-        style={{ marginBottom: '16px' }}
+        style={{ 
+          marginBottom: '20px',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          border: 'none',
+          borderRadius: '8px',
+          fontSize: '16px',
+          fontWeight: 'bold',
+          height: '48px',
+          paddingLeft: '24px',
+          paddingRight: '24px',
+          boxShadow: '0 4px 15px 0 rgba(102, 126, 234, 0.3)',
+          transition: 'all 0.3s ease'
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'translateY(-2px)';
+          e.currentTarget.style.boxShadow = '0 6px 20px 0 rgba(102, 126, 234, 0.4)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'translateY(0)';
+          e.currentTarget.style.boxShadow = '0 4px 15px 0 rgba(102, 126, 234, 0.3)';
+        }}
       >
-        Smart Paste
+        ✨ Smart Paste AI
       </Button>
 
       <Modal

@@ -126,3 +126,15 @@ export interface AnalysisResponseDto {
   createdAtUtc: string;
   analysisResult: PersonalDataDto; // For PersonalData section
 }
+
+export interface AnalyzeSpeechRequestDto {
+  formSection: FormSection;
+  existingDamageReportData: PersonalDataDto;
+}
+
+export interface SpeechAnalysisResponseDto {
+  analysisType: string;
+  formSection: FormSection;
+  createdAtUtc: string;
+  analysisResult: CircumstancesDto; // For Circumstances section
+}

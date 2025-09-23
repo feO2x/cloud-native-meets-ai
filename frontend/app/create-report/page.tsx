@@ -93,6 +93,7 @@ export default function CreateReportPage() {
         <CircumstancesForm 
           data={circumstances} 
           onDataChange={setCircumstances}
+          personalData={personalData}
         />
       )
     },

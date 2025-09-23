@@ -3,7 +3,8 @@
 import React from 'react';
 import { Form, Input, DatePicker, Select, Button, Row, Col, Typography, Card, Space } from 'antd';
 import { ExclamationCircleOutlined, UserAddOutlined, PlusOutlined, DeleteOutlined, ContactsOutlined } from '@ant-design/icons';
-import { CircumstancesDto, AccidentType, PersonDto } from '../../types/damage-reports';
+import { CircumstancesDto, AccidentType, PersonDto, PersonalDataDto } from '../../types/damage-reports';
+import { SmartVoiceButton } from './SmartVoiceButton';
 import dayjs from 'dayjs';
 
 const { Title, Text } = Typography;
@@ -12,6 +13,7 @@ const { Option } = Select;
 interface CircumstancesFormProps {
   data: CircumstancesDto;
   onDataChange: (data: CircumstancesDto) => void;
+  personalData: PersonalDataDto;
 }
 
 const accidentTypeOptions = [
@@ -35,7 +37,7 @@ const countryOptions = [
   { value: 'CH', label: 'Switzerland' }
 ];
 
-export const CircumstancesForm: React.FC<CircumstancesFormProps> = ({ data, onDataChange }) => {
+export const CircumstancesForm: React.FC<CircumstancesFormProps> = ({ data, onDataChange, personalData }) => {
   const handleFieldChange = (field: keyof CircumstancesDto, value: string | AccidentType | PersonDto[] | PersonDto | null) => {
     onDataChange({
       ...data,
@@ -82,8 +84,25 @@ export const CircumstancesForm: React.FC<CircumstancesFormProps> = ({ data, onDa
     }
   };
 
+  const handleVoiceAnalysisComplete = (analysisResult: Partial<CircumstancesDto>) => {
+    // Merge the analysis result with existing data, only updating defined values
+    const updatedData = { ...data };
+    Object.entries(analysisResult).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '' && 
+          !(Array.isArray(value) && value.length === 0)) {
+        (updatedData as Record<string, unknown>)[key] = value;
+      }
+    });
+    onDataChange(updatedData);
+  };
+
   return (
     <div>
+      <SmartVoiceButton 
+        onAnalysisComplete={handleVoiceAnalysisComplete}
+        existingPersonalData={personalData}
+      />
+      
       <Title level={3} style={{ marginBottom: '24px' }}>
         <ExclamationCircleOutlined style={{ marginRight: '8px' }} />
         Accident Circumstances
