@@ -55,9 +55,9 @@ export const DamageReportsList: React.FC<DamageReportsListProps> = ({
   const pageSize = 10;
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const fetchReports = async (skipCount: number, isLoadMore = false) => {
+  const fetchReports = async (skipCount: number, isLoadingMore = false) => {
     try {
-      if (isLoadMore) {
+      if (isLoadingMore) {
         setLoadingMore(true);
       } else {
         setLoading(true);
@@ -72,7 +72,7 @@ export const DamageReportsList: React.FC<DamageReportsListProps> = ({
       
       const data: DamageReportListDto[] = await response.json();
       
-      if (isLoadMore) {
+      if (isLoadingMore) {
         setReports(prev => [...prev, ...data]);
       } else {
         setReports(data);
