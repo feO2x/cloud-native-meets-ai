@@ -1,9 +1,11 @@
 'use client';
 
+import '@ant-design/v5-patch-for-react-19';
 import React from 'react';
 import { Form, Input, DatePicker, Row, Col, Typography } from 'antd';
 import { UserOutlined, MailOutlined, PhoneOutlined, CarOutlined } from '@ant-design/icons';
 import { PersonalDataDto } from '../../types/damage-reports';
+import { SmartPasteButton } from './SmartPasteButton';
 import dayjs from 'dayjs';
 
 const { Title } = Typography;
@@ -27,8 +29,24 @@ export const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ data, onData
     }
   };
 
+  const handleAnalysisComplete = (analysisResult: Partial<PersonalDataDto>) => {
+    // Merge the analysis result with existing data, only updating defined values
+    const updatedData = { ...data };
+    Object.entries(analysisResult).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        (updatedData as Record<string, unknown>)[key] = value;
+      }
+    });
+    onDataChange(updatedData);
+  };
+
   return (
     <div>
+      <SmartPasteButton 
+        onAnalysisComplete={handleAnalysisComplete}
+        existingData={data}
+      />
+      
       <Title level={3} style={{ marginBottom: '24px' }}>
         <UserOutlined style={{ marginRight: '8px' }} />
         Personal Information

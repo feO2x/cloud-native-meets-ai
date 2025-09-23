@@ -105,3 +105,24 @@ export interface PagingParameters {
   skip: number;
   take: number;
 }
+
+// AI Analysis API types
+export enum FormSection {
+  All = 'All',
+  PersonalData = 'PersonalData',
+  Circumstances = 'Circumstances',
+  VehicleDamage = 'VehicleDamage'
+}
+
+export interface AnalyzeTextRequestDto {
+  formSection: FormSection;
+  textToAnalyze: string;
+  existingDamageReportData: Record<string, unknown>; // JsonElement equivalent
+}
+
+export interface AnalysisResponseDto {
+  analysisType: string;
+  formSection: FormSection;
+  createdAtUtc: string;
+  analysisResult: PersonalDataDto; // For PersonalData section
+}
