@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { List, Badge, Card, Typography, Avatar, Spin, Alert, Pagination } from 'antd';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { List, Badge, Card, Typography, Avatar, Spin, Alert } from 'antd';
 import { UserOutlined, CalendarOutlined } from '@ant-design/icons';
 import { DamageReportListDto, AccidentType } from '../types/damage-reports';
 
@@ -48,44 +48,72 @@ export const DamageReportsList: React.FC<DamageReportsListProps> = ({
 }) => {
   const [reports, setReports] = useState<DamageReportListDto[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [total, setTotal] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [skip, setSkip] = useState(0);
   const pageSize = 10;
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const fetchReports = async (skip: number, take: number) => {
+  const fetchReports = async (skipCount: number, isLoadMore = false) => {
     try {
-      setLoading(true);
+      if (isLoadMore) {
+        setLoadingMore(true);
+      } else {
+        setLoading(true);
+      }
       setError(null);
       
-      const response = await fetch(`/api/damage-reports?skip=${skip}&take=${take}`);
+      const response = await fetch(`/api/damage-reports?skip=${skipCount}&take=${pageSize}`);
       
       if (!response.ok) {
         throw new Error(`Failed to fetch reports: ${response.status} ${response.statusText}`);
       }
       
       const data: DamageReportListDto[] = await response.json();
-      setReports(data);
       
-      // For now, we'll assume a large total count since the API doesn't return pagination info
-      // In a real scenario, the API would return pagination metadata
-      setTotal(data.length < take ? skip + data.length : skip + data.length + 1);
+      if (isLoadMore) {
+        setReports(prev => [...prev, ...data]);
+      } else {
+        setReports(data);
+      }
+      
+      // If we got fewer items than requested, we've reached the end
+      setHasMore(data.length === pageSize);
+      setSkip(skipCount + data.length);
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
   };
 
-  useEffect(() => {
-    const skip = (currentPage - 1) * pageSize;
-    fetchReports(skip, pageSize);
-  }, [currentPage]);
+  // Load more data when scrolling near bottom
+  const handleScroll = useCallback(() => {
+    if (!scrollContainerRef.current || loadingMore || !hasMore) return;
+    
+    const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current;
+    const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
+    
+    // Load more when scrolled 80% of the way down
+    if (scrollPercentage > 0.8) {
+      fetchReports(skip, true);
+    }
+  }, [skip, loadingMore, hasMore]);
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+  useEffect(() => {
+    fetchReports(0);
+  }, []);
+
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll);
+      return () => scrollContainer.removeEventListener('scroll', handleScroll);
+    }
+  }, [handleScroll]);
 
   const formatDate = (dateString: string): string => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -115,7 +143,10 @@ export const DamageReportsList: React.FC<DamageReportsListProps> = ({
         body: { padding: 0, height: 'calc(100% - 57px)', display: 'flex', flexDirection: 'column' }
       }}
     >
-      <div style={{ flex: 1, overflow: 'auto' }}>
+      <div 
+        ref={scrollContainerRef}
+        style={{ flex: 1, overflow: 'auto' }}
+      >
         <Spin spinning={loading}>
           <List
             dataSource={reports}
@@ -155,21 +186,22 @@ export const DamageReportsList: React.FC<DamageReportsListProps> = ({
             )}
           />
         </Spin>
+        
+        {/* Loading indicator for infinite scroll */}
+        {loadingMore && (
+          <div style={{ textAlign: 'center', padding: '16px' }}>
+            <Spin size="small" />
+            <Text type="secondary" style={{ marginLeft: 8 }}>Loading more reports...</Text>
+          </div>
+        )}
+        
+        {/* End of data indicator */}
+        {!hasMore && reports.length > 0 && (
+          <div style={{ textAlign: 'center', padding: '16px', color: '#999' }}>
+            <Text type="secondary">No more reports to load</Text>
+          </div>
+        )}
       </div>
-      
-      {total > pageSize && (
-        <div style={{ padding: '16px', borderTop: '1px solid #f0f0f0' }}>
-          <Pagination
-            current={currentPage}
-            total={total}
-            pageSize={pageSize}
-            onChange={handlePageChange}
-            showSizeChanger={false}
-            showQuickJumper
-            showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} reports`}
-          />
-        </div>
-      )}
     </Card>
   );
 };
