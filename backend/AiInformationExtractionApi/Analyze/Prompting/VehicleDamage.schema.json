@@ -19,100 +19,100 @@
     }
   },
   "properties": {
-    "FrontBumper": {
+    "frontBumper": {
       "$ref": "#/definitions/DamageType"
     },
-    "RearBumper": {
+    "rearBumper": {
       "$ref": "#/definitions/DamageType"
     },
-    "Hood": {
+    "hood": {
       "$ref": "#/definitions/DamageType"
     },
-    "TrunkLid": {
+    "trunkLid": {
       "$ref": "#/definitions/DamageType"
     },
-    "Roof": {
+    "roof": {
       "$ref": "#/definitions/DamageType"
     },
-    "FrontLeftDoor": {
+    "frontLeftDoor": {
       "$ref": "#/definitions/DamageType"
     },
-    "FrontRightDoor": {
+    "frontRightDoor": {
       "$ref": "#/definitions/DamageType"
     },
-    "RearLeftDoor": {
+    "rearLeftDoor": {
       "$ref": "#/definitions/DamageType"
     },
-    "RearRightDoor": {
+    "rearRightDoor": {
       "$ref": "#/definitions/DamageType"
     },
-    "FrontLeftFender": {
+    "frontLeftFender": {
       "$ref": "#/definitions/DamageType"
     },
-    "FrontRightFender": {
+    "frontRightFender": {
       "$ref": "#/definitions/DamageType"
     },
-    "RearLeftFender": {
+    "rearLeftFender": {
       "$ref": "#/definitions/DamageType"
     },
-    "RearRightFender": {
+    "rearRightFender": {
       "$ref": "#/definitions/DamageType"
     },
-    "Grille": {
+    "grille": {
       "$ref": "#/definitions/DamageType"
     },
-    "LeftHeadlights": {
+    "leftHeadlights": {
       "$ref": "#/definitions/DamageType"
     },
-    "RightHeadlights": {
+    "rightHeadlights": {
       "$ref": "#/definitions/DamageType"
     },
-    "LeftTaillights": {
+    "leftTaillights": {
       "$ref": "#/definitions/DamageType"
     },
-    "RightTaillights": {
+    "rightTaillights": {
       "$ref": "#/definitions/DamageType"
     },
-    "LeftSideMirror": {
+    "leftSideMirror": {
       "$ref": "#/definitions/DamageType"
     },
-    "RightSideMirror": {
+    "rightSideMirror": {
       "$ref": "#/definitions/DamageType"
     },
-    "Windshield": {
+    "windshield": {
       "$ref": "#/definitions/DamageType"
     },
-    "RearWindshield": {
+    "rearWindshield": {
       "$ref": "#/definitions/DamageType"
     },
-    "FrontLeftWindow": {
+    "frontLeftWindow": {
       "$ref": "#/definitions/DamageType"
     },
-    "FrontRightWindow": {
+    "frontRightWindow": {
       "$ref": "#/definitions/DamageType"
     },
-    "RearLeftWindow": {
+    "rearLeftWindow": {
       "$ref": "#/definitions/DamageType"
     },
-    "RearRightWindow": {
+    "rearRightWindow": {
       "$ref": "#/definitions/DamageType"
     },
-    "FrontLeftWheel": {
+    "frontLeftWheel": {
       "$ref": "#/definitions/DamageType"
     },
-    "FrontRightWheel": {
+    "frontRightWheel": {
       "$ref": "#/definitions/DamageType"
     },
-    "RearLeftWheel": {
+    "rearLeftWheel": {
       "$ref": "#/definitions/DamageType"
     },
-    "RearRightWheel": {
+    "rearRightWheel": {
       "$ref": "#/definitions/DamageType"
     },
-    "LeftExteriorTrim": {
+    "leftExteriorTrim": {
       "$ref": "#/definitions/DamageType"
     },
-    "RightExteriorTrim": {
+    "rightExteriorTrim": {
       "$ref": "#/definitions/DamageType"
     }
   }
