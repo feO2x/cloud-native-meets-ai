@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Steps, Card, Button, message } from 'antd';
 import { CarOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
+import { uuidv7 } from 'uuidv7';
 import { PersonalDataDto, CircumstancesDto, VehicleDamageDto, DamageReportDto, DamageType, AccidentType } from '../../types/damage-reports';
 import { PersonalDataForm } from '../../components/wizard/PersonalDataForm';
 import { CircumstancesForm } from '../../components/wizard/CircumstancesForm';
@@ -16,6 +17,12 @@ export default function CreateReportPage() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [reportId, setReportId] = useState<string>('');
+  
+  // Generate UUID v7 once when component mounts
+  useEffect(() => {
+    setReportId(uuidv7());
+  }, []);
   
   // Form data state
   const [personalData, setPersonalData] = useState<PersonalDataDto>({
@@ -157,7 +164,7 @@ export default function CreateReportPage() {
     setLoading(true);
     try {
       const damageReport: DamageReportDto = {
-        id: crypto.randomUUID(),
+        id: reportId,
         createdAtUtc: new Date().toISOString(),
         personalData,
         circumstances,
