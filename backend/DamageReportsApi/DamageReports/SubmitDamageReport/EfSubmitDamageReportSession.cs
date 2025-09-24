@@ -1,5 +1,4 @@
 using System;
-using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using DamageReportsApi.DatabaseAccess;
@@ -9,54 +8,51 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DamageReportsApi.DamageReports.SubmitDamageReport;
 
-public sealed class EfSubmitDamageReportSession : EfSession<DamageReportsDbContext>.WithTransaction,
+public sealed class EfSubmitDamageReportSession : EfSession<DamageReportsDbContext>,
                                                   ISubmitDamageReportDbSession
 {
-    public EfSubmitDamageReportSession(DamageReportsDbContext dbContext) : base(dbContext, IsolationLevel.RepeatableRead) { }
+    public EfSubmitDamageReportSession(DamageReportsDbContext dbContext) : base(dbContext) { }
 
-    public async Task<DamageReport?> GetDamageReportAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        var dbContext = await GetDbContextAsync(cancellationToken);
-        return await dbContext
+    public Task<DamageReport?> GetDamageReportAsync(Guid id, CancellationToken cancellationToken = default) =>
+        DbContext
            .DamageReports
            .Include(dr => dr.Passengers)
            .Include(dr => dr.OtherPartyContact)
            .FirstOrDefaultAsync(dr => dr.Id == id, cancellationToken);
-    }
 
-    public async Task AddDamageReportAsync(DamageReport damageReport, CancellationToken cancellationToken = default)
+    public Task AddDamageReportAsync(DamageReport damageReport, CancellationToken cancellationToken = default)
     {
-        var dbContext = await GetDbContextAsync(cancellationToken);
-        dbContext.DamageReports.Add(damageReport);
+        DbContext.DamageReports.Add(damageReport);
+        return Task.CompletedTask;
     }
 
-    public async Task AddPassengerAsync(Passenger passenger, CancellationToken cancellationToken = default)
+    public Task AddPassengerAsync(Passenger passenger, CancellationToken cancellationToken = default)
     {
-        var dbContext = await GetDbContextAsync(cancellationToken);
-        dbContext.Passengers.Add(passenger);
+        DbContext.Passengers.Add(passenger);
+        return Task.CompletedTask;
     }
 
-    public async Task AddOtherPartyContactAsync(
+    public Task AddOtherPartyContactAsync(
         OtherPartyContact otherPartyContact,
         CancellationToken cancellationToken = default
     )
     {
-        var dbContext = await GetDbContextAsync(cancellationToken);
-        dbContext.OtherPartyContacts.Add(otherPartyContact);
+        DbContext.OtherPartyContacts.Add(otherPartyContact);
+        return Task.CompletedTask;
     }
 
-    public async Task RemovePassengerAsync(Passenger passenger, CancellationToken cancellationToken = default)
+    public Task RemovePassengerAsync(Passenger passenger, CancellationToken cancellationToken = default)
     {
-        var dbContext = await GetDbContextAsync(cancellationToken);
-        dbContext.Passengers.Remove(passenger);
+        DbContext.Passengers.Remove(passenger);
+        return Task.CompletedTask;
     }
 
-    public async Task RemoveOtherPartyContactAsync(
+    public Task RemoveOtherPartyContactAsync(
         OtherPartyContact otherPartyContact,
         CancellationToken cancellationToken = default
     )
     {
-        var dbContext = await GetDbContextAsync(cancellationToken);
-        dbContext.OtherPartyContacts.Remove(otherPartyContact);
+        DbContext.OtherPartyContacts.Remove(otherPartyContact);
+        return Task.CompletedTask;
     }
 }
