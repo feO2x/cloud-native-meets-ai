@@ -45,8 +45,8 @@ public sealed class AspireFixture : IAsyncLifetime
         await resourceNotificationService
            .WaitForResourceAsync(Constants.AiInformationExtractionServiceName, KnownResourceStates.Running)
            .WaitAsync(TimeSpan.FromSeconds(30));
-        var tokenManagementServices = new ServiceCollection();
-        tokenManagementServices
+        var serviceCollection = new ServiceCollection();
+        serviceCollection
            .AddDistributedMemoryCache()
            .AddClientCredentialsTokenManagement()
            .AddClient(
@@ -60,7 +60,7 @@ public sealed class AspireFixture : IAsyncLifetime
                     client.Scope = Scope.Parse("webapi");
                 }
             );
-        _tokenManagementServiceProvider = tokenManagementServices.BuildServiceProvider();
+        _tokenManagementServiceProvider = serviceCollection.BuildServiceProvider();
     }
 
     public async Task DisposeAsync()
